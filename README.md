@@ -1,2 +1,2 @@
-# ext-custom-fonts
+# Custom Fonts extension
 Enforces custom fonts.

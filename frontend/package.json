@@ -1,0 +1,30 @@
+{
+  "name": "@shopgate/custom-fonts",
+  "version": "0.0.1",
+  "description": "Enforces custom fonts configured in the extension config.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shopgate/ext-custom-fonts.git"
+  },
+  "keywords": [
+    "shopgate",
+    "cloud",
+    "custom",
+    "font"
+  ],
+  "author": "Shopgate GmbH",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/shopgate/ext-custom-fonts/issues"
+  },
+  "homepage": "https://github.com/shopgate/ext-custom-fonts#readme",
+  "devDependencies": {
+    "glamor": "^2.20.40",
+    "react": "^16.5.1",
+    "react-helmet": "^5.2.0"
+  }
+}
