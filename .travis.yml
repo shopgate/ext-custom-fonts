@@ -7,7 +7,7 @@ node_js:
 - 9.4.0
 install:
 - cd frontend && npm i
-script: npm run coverage --maxWorkers=4 --ci
+script: npm run cover --maxWorkers=4 --ci
 after_script: cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
 branches:
   only:
