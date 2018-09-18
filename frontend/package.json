@@ -1,6 +1,6 @@
 {
   "name": "@shopgate/custom-fonts",
-  "version": "0.0.1-beta.2",
+  "version": "1.0.0",
   "description": "Enforces custom fonts configured in the extension config.",
   "main": "index.js",
   "scripts": {
