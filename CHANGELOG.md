@@ -11,4 +11,4 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Custom font can be achieved by configuring the extension with "url" and "rules" param. Where "url" is a stylesheet url and rules are additional CSS rules added to a body.
 
 [Unreleased]: https://github.com/shopgate/ext-bigcommerce-user/compare/v1.0.0...HEAD
-[0.1.0]: https://github.com/shopgate/ext-custom-fonts/tree/v1.0.0
+[1.0.0]: https://github.com/shopgate/ext-custom-fonts/tree/v1.0.0
