@@ -2,9 +2,10 @@ import React from 'react';
 import { mount } from 'enzyme';
 import CustomFont from './index';
 
+/* eslint-disable-next-line react/prop-types */
 jest.mock('react-helmet', () => ({ children }) => (<div>{children}</div>));
 
-let mockedConfig = {}
+let mockedConfig = {};
 jest.mock('../../getConfig', () => () => mockedConfig);
 
 const mockedGlamorGlobal = jest.fn();
@@ -25,8 +26,11 @@ describe('Custom Fonts', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
+  /**
+   * Tests component which should return early.
+   */
   const testExpectEmpty = () => {
-    const component = mount(<CustomFont/>);
+    const component = mount(<CustomFont />);
     expect(component.html()).toBe(null);
     expect(mockedLogger).toHaveBeenCalled();
   };
@@ -37,7 +41,7 @@ describe('Custom Fonts', () => {
 
   it('should render nothing and log error when url is empty', () => {
     mockedConfig.url = '';
-    mockedConfig.props = {one: 1};
+    mockedConfig.props = { one: 1 };
     testExpectEmpty();
   });
 
@@ -53,7 +57,7 @@ describe('Custom Fonts', () => {
       url: 'foo',
       rules: {},
     };
-    const component = mount(<CustomFont/>);
+    const component = mount(<CustomFont />);
     expect(component.find('link').exists()).toBe(true);
     expect(mockedLogger).not.toHaveBeenCalled();
     expect(mockedGlamorGlobal).not.toHaveBeenCalled();
@@ -66,11 +70,11 @@ describe('Custom Fonts', () => {
         one: 1,
       },
     };
-    const component = mount(<CustomFont/>);
+    const component = mount(<CustomFont />);
     expect(component.find('link').exists()).toBe(true);
     expect(mockedLogger).not.toHaveBeenCalled();
     expect(mockedGlamorGlobal).toHaveBeenCalledWith('body', {
       one: 1,
     });
-  })
+  });
 });

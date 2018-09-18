@@ -7,7 +7,7 @@ jest.mock('./config', () => ({
 describe('.getConfig', () => {
   it('should return object', () => {
     expect(getConfig()).toEqual({
-      one: 1
+      one: 1,
     });
-  })
+  });
 });
