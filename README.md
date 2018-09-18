@@ -1,5 +1,9 @@
 # Custom Fonts extension
 
+[![Build Status](https://travis-ci.org/shopgate/ext-custom-fonts.svg?branch=master)](https://travis-ci.org/shopgate/ext-custom-fonts)
+
+[![Coverage Status](https://coveralls.io/repos/github/shopgate/ext-custom-fonts/badge.svg?branch=master)](https://coveralls.io/github/shopgate/ext-custom-fonts?branch=master)
+
 ## Purpose of this extension
 This extension adds an additional CSS rule set to a "body" selector. By using it you can add specific font rules in order to make a web font specified in "url" config to be shown.
 
