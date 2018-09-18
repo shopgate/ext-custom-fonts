@@ -1,0 +1,16 @@
+cache:
+  npm: true,
+  directories:
+  - node_modules
+language: node_js
+node_js:
+- 9.4.0
+install:
+- cd frontend && npm i
+script: npm run coverage --maxWorkers=4 --ci
+after_script: cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+branches:
+  only:
+  - master
+notifications:
+  email: false

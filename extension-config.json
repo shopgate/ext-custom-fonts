@@ -1,0 +1,34 @@
+{
+  "version": "0.0.1-beta.2",
+  "id": "@shopgate/custom-fonts",
+  "configuration": {
+    "url": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": "",
+      "params": {
+        "required": false,
+        "type": "textbox",
+        "label": "Please provide url for font import. E.x. https://fonts.googleapis.com/css?family=Roboto:400,400i,500,700,900&subset=latin-ext"
+      }
+    },
+    "rules": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": {},
+      "params": {
+        "required": false,
+        "type": "json",
+        "label": "Additional css params for <body> element. Please use glamor style (camelCase, no prefixes)"
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "CustomFont",
+      "type": "portals",
+      "path": "frontend/portals/CustomFont",
+      "target": "app.globals"
+    }
+  ]
+}
