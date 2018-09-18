@@ -1,4 +1,4 @@
-import config from './config.json';
+import config from './config';
 
 /**
  * Config getter. Returns a config imported from a json file.
