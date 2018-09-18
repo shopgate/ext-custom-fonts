@@ -59,6 +59,7 @@ describe('Custom Fonts', () => {
     };
     const component = mount(<CustomFont />);
     expect(component.find('link').exists()).toBe(true);
+    expect(component.find('link').at(0).props().href).toBe('foo');
     expect(mockedLogger).not.toHaveBeenCalled();
     expect(mockedGlamorGlobal).not.toHaveBeenCalled();
   });
@@ -72,6 +73,7 @@ describe('Custom Fonts', () => {
     };
     const component = mount(<CustomFont />);
     expect(component.find('link').exists()).toBe(true);
+    expect(component.find('link').at(0).props().href).toBe('foo');
     expect(mockedLogger).not.toHaveBeenCalled();
     expect(mockedGlamorGlobal).toHaveBeenCalledWith('body', {
       one: 1,
