@@ -12,6 +12,16 @@
         "label": "Please provide url for font import. E.x. https://fonts.googleapis.com/css?family=Roboto:400,400i,500,700,900&subset=latin-ext"
       }
     },
+    "urls": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": [],
+      "params": {
+        "required": false,
+        "type": "json",
+        "label": "Please provide urls for font import (array). E.x. [\"https://fonts.googleapis.com/css?family=Roboto:400,400i,500,700,900&subset=latin-ext\"]"
+      }
+    },
     "rules": {
       "type": "admin",
       "destination": "frontend",

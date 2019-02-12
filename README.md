@@ -8,23 +8,32 @@ This extension adds an additional CSS rule set to a "body" selector. By using it
 ## Configuration
 
 Set the following values in your Shopgate Connect Admin:
-* `url` - (text) URL for font import. 
+
+* `urls` - (Array) - urls for font import
 * `rules` - (object) Additional css params for \<body> element. Please use glamor style (camelCase, no prefixes)
+* `url` - ~~(text) URL for font import - ⛔️ Deprecated please use `urls`.~~ 
 
 ### Example
 
 ```json
 {
-  "url": "https://fonts.googleapis.com/css?family=Roboto:400,400i,500,700,900",
+  "urls": [
+    "https://fonts.googleapis.com/css?family=Roboto:400,400i,500,700,900",
+    "https://fonts.googleapis.com/css?family=Lato:400,400i,500,700,900"
+  ],
   "rules": {
-    "font": "16px/1.5 Roboto, Arial, sans-serif !important"
+    "font": "16px/1.5 Roboto, Arial, sans-serif !important",
+    "& .h2": {
+      "fontFamily": "Lato, sans-serif"
+    }
   }
 }
 ```
 
-Produces additional <link> element in the PWA app:
+Produces additional <link> elements in the PWA app:
 ```html
 <link href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,700,900" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Lato:400,400i,500,700,900" rel="stylesheet">
 ```
 
 And additional css rule is added to global stylesheet:

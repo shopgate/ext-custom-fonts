@@ -9,21 +9,26 @@ import getConfig from '../../getConfig';
  * @returns {JSX}
  */
 const CustomFont = () => {
-  const { rules, url } = getConfig();
+  const { rules, url, urls = [] } = getConfig();
 
-  if (!rules || !url) {
+  if (!rules || (!url && !urls.length)) {
     logger.error('CustomFonts: Invalid config. Aborting.', getConfig());
     return null;
   }
 
-  // Adding global props.
-  if (Object.keys(rules).length) {
-    css.global('body', rules);
+  if (rules) {
+    // Adding global props.
+    if (Object.keys(rules).length) {
+      css.global('body', rules);
+    }
   }
 
   return (
     <Helmet>
-      <link rel="stylesheet" href={url} />
+      { url && <link rel="stylesheet" href={url} /> }
+      { urls && urls.map(href => (
+        <link key={href} rel="stylesheet" href={href} />
+      ))}
     </Helmet>
   );
 };
