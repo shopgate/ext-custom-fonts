@@ -21,6 +21,16 @@
         "type": "json",
         "label": "Additional css params for <body> element. Please use glamor style (camelCase, no prefixes)"
       }
+    },
+    "typography": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": {},
+      "params": {
+        "required": false,
+        "type": "json",
+        "label": "Additional typography params applied to the theme that's available from PWA >= 7.29.0."
+      }
     }
   },
   "components": [
@@ -29,6 +39,11 @@
       "type": "portals",
       "path": "frontend/portals/CustomFont",
       "target": "app.globals"
+    },
+    {
+      "id": "Subscribers",
+      "path": "frontend/subscriptions.js",
+      "type": "subscribers"
     }
   ]
 }

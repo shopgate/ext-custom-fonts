@@ -1,7 +1,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { css } from 'glamor';
-import { logger } from '@shopgate/pwa-core/helpers';
+import { logger } from '@shopgate/engage/core/helpers';
 import getConfig from '../../getConfig';
 
 /**
