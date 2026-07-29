@@ -51,8 +51,6 @@ The default typography settings can be extended or overridden using the typograp
 When this feature was first introduced, the theme was primarily applied to components newly developed for CMS 2.0, such as headline elements.
 
 ### Example
-The following example shows a basic configuration that replaces the default `fontFamily` with a custom one. The `allVariants` object defines typography settings that are applied to all typography variants - here it changes the default text color. The `h1` object sets a custom font family, font weight and font size that's only used for h1 headlines (h2-h6 is certainly also supported).
-
 The following example demonstrates a basic configuration that replaces the default `fontFamily` with a custom one.
 The `h1` object customizes the H1 headline style by specifying a custom font family, font weight, and font size. (Styles for h2–h6 can also be defined in the same way.)
 
