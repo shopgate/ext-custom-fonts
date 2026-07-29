@@ -1,7 +1,6 @@
 import {
   CSS_ROOT_FONT_FAMILY,
   CSS_ROOT_FONT_SIZE,
-  CSS_ROOT_LINE_HEIGHT,
   ROOT_TYPOGRAPHY_STYLE_TAG_ID,
   stripImportant,
   fontStyleToProps,
@@ -54,18 +53,16 @@ describe('ext-custom-fonts/rootTypography', () => {
       expect(fontStyleToProps({
         fontFamily: 'Roboto, Arial, sans-serif',
         fontSize: '16px',
-        lineHeight: '1.5',
       })).toEqual({
         [CSS_ROOT_FONT_FAMILY]: 'Roboto, Arial, sans-serif',
         [CSS_ROOT_FONT_SIZE]: '16px',
-        [CSS_ROOT_LINE_HEIGHT]: '1.5',
       });
     });
 
-    it('omits empty and `normal` line-height values', () => {
+    it('ignores line-height and returns only the mapped properties', () => {
       expect(fontStyleToProps({
         fontSize: '16px',
-        lineHeight: 'normal',
+        lineHeight: '1.5',
       })).toEqual({ [CSS_ROOT_FONT_SIZE]: '16px' });
       expect(fontStyleToProps({})).toEqual({});
     });
@@ -90,7 +87,6 @@ describe('ext-custom-fonts/rootTypography', () => {
         expect(decomposeFontShorthand('16px/1.5 Roboto, Arial, sans-serif')).toEqual({
           [CSS_ROOT_FONT_FAMILY]: 'Roboto, Arial, sans-serif',
           [CSS_ROOT_FONT_SIZE]: '16px',
-          [CSS_ROOT_LINE_HEIGHT]: '1.5',
         });
       });
 
@@ -98,7 +94,6 @@ describe('ext-custom-fonts/rootTypography', () => {
         expect(decomposeFontShorthand('16px/1.5 Roboto !important')).toEqual({
           [CSS_ROOT_FONT_FAMILY]: 'Roboto',
           [CSS_ROOT_FONT_SIZE]: '16px',
-          [CSS_ROOT_LINE_HEIGHT]: '1.5',
         });
       });
     });
@@ -108,19 +103,42 @@ describe('ext-custom-fonts/rootTypography', () => {
     it('maps font longhands to the matching custom properties and strips !important', () => {
       const { rootProps, otherRules } = buildRootTypographyProps({
         fontFamily: 'Roboto, sans-serif',
-        fontSize: '17px',
-        lineHeight: '1.43 !important',
+        fontSize: '17px !important',
       });
 
       expect(rootProps).toEqual({
         [CSS_ROOT_FONT_FAMILY]: 'Roboto, sans-serif',
         [CSS_ROOT_FONT_SIZE]: '17px',
-        [CSS_ROOT_LINE_HEIGHT]: '1.43',
       });
       expect(otherRules).toEqual({});
     });
 
-    it('decomposes a font shorthand key', () => {
+    it('does not treat line-height as a root property and keeps it in otherRules', () => {
+      const { rootProps, otherRules } = buildRootTypographyProps({
+        fontFamily: 'Roboto, sans-serif',
+        lineHeight: '1.43 !important',
+      });
+
+      expect(rootProps).toEqual({ [CSS_ROOT_FONT_FAMILY]: 'Roboto, sans-serif' });
+      expect(otherRules).toEqual({ lineHeight: '1.43 !important' });
+    });
+
+    it('keeps the raw font shorthand in otherRules when it cannot be decomposed', () => {
+      // An element whose style does not expand the `font` shorthand (no CSSOM, e.g. SSR) makes
+      // decomposeFontShorthand() yield {} - the shorthand must still be preserved, not dropped.
+      jest.spyOn(document, 'createElement').mockImplementation(() => ({ style: {} }));
+
+      const { rootProps, otherRules } = buildRootTypographyProps({
+        font: '16px/1.5 Roboto, Arial, sans-serif !important',
+      });
+
+      expect(rootProps).toEqual({});
+      expect(otherRules).toEqual({ font: '16px/1.5 Roboto, Arial, sans-serif !important' });
+
+      document.createElement.mockRestore();
+    });
+
+    it('decomposes a font shorthand key and drops its line-height part', () => {
       jest.spyOn(document, 'createElement').mockImplementation(createBrowserLikeElement);
 
       const { rootProps } = buildRootTypographyProps({
@@ -130,7 +148,6 @@ describe('ext-custom-fonts/rootTypography', () => {
       expect(rootProps).toEqual({
         [CSS_ROOT_FONT_FAMILY]: 'Roboto, Arial, sans-serif',
         [CSS_ROOT_FONT_SIZE]: '16px',
-        [CSS_ROOT_LINE_HEIGHT]: '1.5',
       });
 
       document.createElement.mockRestore();
@@ -155,10 +172,10 @@ describe('ext-custom-fonts/rootTypography', () => {
     it('serializes props into a :root rule', () => {
       const css = serializeRootTypographyProps({
         [CSS_ROOT_FONT_SIZE]: '17px',
-        [CSS_ROOT_LINE_HEIGHT]: '1.43',
+        [CSS_ROOT_FONT_FAMILY]: 'Roboto, sans-serif',
       });
 
-      expect(css).toBe(':root { --sg-root-font-size: 17px; --sg-root-line-height: 1.43; }');
+      expect(css).toBe(':root { --sg-root-font-size: 17px; --sg-root-font-family: Roboto, sans-serif; }');
     });
   });
 

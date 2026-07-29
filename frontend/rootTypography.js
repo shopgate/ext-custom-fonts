@@ -3,19 +3,25 @@
  * the PWA reset (`@shopgate/engage/styles`), but are defined locally so the extension stays
  * self-contained and does not import from the heavy `@shopgate/engage/styles` barrel (theme +
  * tss-react + emotion), which would also couple the extension to a specific engage version.
+ *
+ * Only font-family and font-size are root typography properties: the PWA reset publishes and
+ * consumes `--sg-root-font-family` (the family shared by every variant) and `--sg-root-font-size`
+ * (the rem anchor). Base line-height is NOT a root property - it is the `body1` typography variant.
+ * A configured line-height therefore has to go through the `typography` config setting
+ * (`body1.lineHeight`), not the `font` shorthand / `lineHeight` rule, which is why there is no
+ * `--sg-root-line-height` here.
  */
 export const CSS_ROOT_FONT_FAMILY = '--sg-root-font-family';
 export const CSS_ROOT_FONT_SIZE = '--sg-root-font-size';
-export const CSS_ROOT_LINE_HEIGHT = '--sg-root-line-height';
 
 /**
  * Maps css `font` longhand keys (glamor camelCase) to their root typography custom property.
+ * `lineHeight` is intentionally absent - see the note above.
  * @type {Object}
  */
 const FONT_LONGHAND_TO_PROP = {
   fontFamily: CSS_ROOT_FONT_FAMILY,
   fontSize: CSS_ROOT_FONT_SIZE,
-  lineHeight: CSS_ROOT_LINE_HEIGHT,
 };
 
 /**
@@ -30,25 +36,26 @@ export const stripImportant = value => (typeof value === 'string'
 
 /**
  * Maps the resolved font longhands of a CSSStyleDeclaration (or a plain object with the same keys)
- * onto the root typography custom properties.
- * @param {Object} style An object exposing `fontFamily` / `fontSize` / `lineHeight`.
+ * onto the root typography custom properties. Any `lineHeight` on the style is ignored - it is not
+ * a root property (see the note at the top of this module).
+ * @param {Object} style An object exposing `fontFamily` / `fontSize`.
  * @returns {Object} A map of root typography custom property name to value.
  */
 export const fontStyleToProps = (style = {}) => {
   const props = {};
-  const { fontFamily, fontSize, lineHeight } = style;
+  const { fontFamily, fontSize } = style;
 
   if (fontFamily) props[CSS_ROOT_FONT_FAMILY] = fontFamily;
   if (fontSize) props[CSS_ROOT_FONT_SIZE] = fontSize;
-  if (lineHeight && lineHeight !== 'normal') props[CSS_ROOT_LINE_HEIGHT] = lineHeight;
 
   return props;
 };
 
 /**
- * Decomposes a css `font` shorthand string into its family/size/line-height parts using the
- * browser's CSSOM parser (spec compliant, handles any valid shorthand). A trailing `!important` is
- * removed first. Returns an empty object when the value is not a string or there is no DOM.
+ * Decomposes a css `font` shorthand string into its family/size parts using the browser's CSSOM
+ * parser (spec compliant, handles any valid shorthand). Its line-height part is ignored (not a
+ * root property). A trailing `!important` is removed first. Returns an empty object when the value
+ * is not a string or there is no DOM.
  *
  * Note: relies on the CSSOM expanding the `font` shorthand into its longhands, which real browsers
  * do but jsdom does not - so under jsdom this yields `{}`.
@@ -70,9 +77,13 @@ export const decomposeFontShorthand = (value) => {
  * Builds the root typography custom properties (and any leftover non-font rules) from the extension
  * `rules` object.
  *
- * - a `font` shorthand is decomposed into the three `--sg-root-*` properties,
- * - the `fontFamily` / `fontSize` / `lineHeight` longhands map to the matching property,
- * - every other declaration is returned untouched in `otherRules`.
+ * - a `font` shorthand is decomposed into the `--sg-root-font-family` / `--sg-root-font-size`
+ *   properties (its line-height part is dropped - line-height is not a root property). If it cannot
+ *   be decomposed (no CSSOM, e.g. SSR, or an unparseable value) the raw shorthand is kept in
+ *   `otherRules` so the configured font is still applied instead of being silently dropped,
+ * - the `fontFamily` / `fontSize` longhands map to the matching property,
+ * - every other declaration (including a `lineHeight` longhand) is returned untouched in
+ *   `otherRules`.
  *
  * The structured `typography` config is intentionally NOT handled here - it is fed to the theme via
  * the subscriptions (`CONFIGURATION_COLLECTION_KEY_THEME_TYPOGRAPHY`), so injecting it again as css
@@ -86,7 +97,15 @@ export const buildRootTypographyProps = (rules = {}) => {
 
   Object.entries(rules).forEach(([key, value]) => {
     if (key === 'font') {
-      Object.assign(rootProps, decomposeFontShorthand(value));
+      const fontProps = decomposeFontShorthand(value);
+
+      if (Object.keys(fontProps).length) {
+        Object.assign(rootProps, fontProps);
+      } else {
+        // Decomposition yielded nothing (no CSSOM, or an unparseable shorthand) - keep the raw
+        // declaration so the configured font is still applied instead of silently dropped.
+        otherRules[key] = value;
+      }
     } else if (FONT_LONGHAND_TO_PROP[key]) {
       rootProps[FONT_LONGHAND_TO_PROP[key]] = stripImportant(value);
     } else {

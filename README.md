@@ -34,6 +34,14 @@ body {
 }
 ```
 
+> **Note on newer PWA versions (root typography):** On PWA versions that render base typography
+> through the `--sg-root-*` custom properties, the `font` shorthand's **font-family** and
+> **font-size** are applied to the root element so they stay in sync with the theme. Its
+> **line-height** part is not applied here — base line-height is the `body1` typography variant, so
+> configure it via the [`typography`](#extending-typography-of-the-pwa-theme) setting
+> (`body1.lineHeight`) instead. Older PWA versions keep applying the whole `rules` object to
+> `<body>` unchanged.
+
 ## Extending Typography of the PWA Theme
 Starting with version 7.29.0, the PWA includes a theming system that allows you to customize various typography-related settings.
 
