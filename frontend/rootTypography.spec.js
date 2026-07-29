@@ -120,7 +120,7 @@ describe('ext-custom-fonts/rootTypography', () => {
       });
 
       expect(rootProps).toEqual({ [CSS_ROOT_FONT_FAMILY]: 'Roboto, sans-serif' });
-      expect(otherRules).toEqual({ lineHeight: '1.43 !important' });
+      expect(otherRules).toEqual({ lineHeight: '1.43' });
     });
 
     it('keeps the raw font shorthand in otherRules when it cannot be decomposed', () => {
@@ -133,7 +133,7 @@ describe('ext-custom-fonts/rootTypography', () => {
       });
 
       expect(rootProps).toEqual({});
-      expect(otherRules).toEqual({ font: '16px/1.5 Roboto, Arial, sans-serif !important' });
+      expect(otherRules).toEqual({ font: '16px/1.5 Roboto, Arial, sans-serif' });
 
       document.createElement.mockRestore();
     });
@@ -153,17 +153,17 @@ describe('ext-custom-fonts/rootTypography', () => {
       document.createElement.mockRestore();
     });
 
-    it('keeps non-font declarations in otherRules', () => {
+    it('keeps non-font declarations in otherRules and strips their !important', () => {
       const { rootProps, otherRules } = buildRootTypographyProps({
         fontSize: '17px',
         letterSpacing: '0.5px',
-        textTransform: 'uppercase',
+        color: 'red !important',
       });
 
       expect(rootProps).toEqual({ [CSS_ROOT_FONT_SIZE]: '17px' });
       expect(otherRules).toEqual({
         letterSpacing: '0.5px',
-        textTransform: 'uppercase',
+        color: 'red',
       });
     });
   });

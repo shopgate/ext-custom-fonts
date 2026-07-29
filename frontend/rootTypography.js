@@ -82,8 +82,8 @@ export const decomposeFontShorthand = (value) => {
  *   be decomposed (no CSSOM, e.g. SSR, or an unparseable value) the raw shorthand is kept in
  *   `otherRules` so the configured font is still applied instead of being silently dropped,
  * - the `fontFamily` / `fontSize` longhands map to the matching property,
- * - every other declaration (including a `lineHeight` longhand) is returned untouched in
- *   `otherRules`.
+ * - every other declaration (including a `lineHeight` longhand) is returned in `otherRules`, with a
+ *   trailing `!important` stripped so it stays an overridable base layer (theme.css / preview win).
  *
  * The structured `typography` config is intentionally NOT handled here - it is fed to the theme via
  * the subscriptions (`CONFIGURATION_COLLECTION_KEY_THEME_TYPOGRAPHY`), so injecting it again as css
@@ -102,14 +102,14 @@ export const buildRootTypographyProps = (rules = {}) => {
       if (Object.keys(fontProps).length) {
         Object.assign(rootProps, fontProps);
       } else {
-        // Decomposition yielded nothing (no CSSOM, or an unparseable shorthand) - keep the raw
+        // Decomposition yielded nothing (no CSSOM, or an unparseable shorthand) - keep the
         // declaration so the configured font is still applied instead of silently dropped.
-        otherRules[key] = value;
+        otherRules[key] = stripImportant(value);
       }
     } else if (FONT_LONGHAND_TO_PROP[key]) {
       rootProps[FONT_LONGHAND_TO_PROP[key]] = stripImportant(value);
     } else {
-      otherRules[key] = value;
+      otherRules[key] = stripImportant(value);
     }
   });
 
