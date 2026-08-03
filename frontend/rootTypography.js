@@ -15,6 +15,16 @@ export const CSS_ROOT_FONT_FAMILY = '--sg-root-font-family';
 export const CSS_ROOT_FONT_SIZE = '--sg-root-font-size';
 
 /**
+ * Configuration collection key the PWA uses to advertise that it renders base typography through
+ * the `--sg-root-*` custom properties. Mirrors the constant published by future engage versions
+ * (`@shopgate/engage/core/constants`) but is defined locally: importing it from engage triggers a
+ * webpack "export not found" warning on older PWA versions that do not yet export it. Its value
+ * must stay identical to the PWA constant (value==name convention) so the flag is read under the
+ * same key the PWA sets it under.
+ */
+export const CONFIGURATION_COLLECTION_KEY_HAS_ROOT_TYPOGRAPHY = 'CONFIGURATION_COLLECTION_KEY_HAS_ROOT_TYPOGRAPHY';
+
+/**
  * Maps css `font` longhand keys (glamor camelCase) to their root typography custom property.
  * `lineHeight` is intentionally absent - see the note above.
  * @type {Object}

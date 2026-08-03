@@ -3,8 +3,8 @@ import Helmet from 'react-helmet';
 import { css } from 'glamor';
 import { logger } from '@shopgate/engage/core/helpers';
 import { configuration } from '@shopgate/engage/core/collections';
-import { CONFIGURATION_COLLECTION_KEY_HAS_ROOT_TYPOGRAPHY } from '@shopgate/engage/core/constants';
 import {
+  CONFIGURATION_COLLECTION_KEY_HAS_ROOT_TYPOGRAPHY,
   buildRootTypographyProps,
   serializeRootTypographyProps,
   applyRootTypographyStyle,
@@ -14,13 +14,11 @@ import getConfig from '../../getConfig';
 /**
  * Whether the current PWA renders base typography through the `--sg-root-*` custom properties. The
  * PWA sets this capability flag on the shared configuration collection; on older PWA versions the
- * constant is `undefined` and the flag is never set, so the check is falsy.
+ * flag is never set, so the lookup is falsy and the legacy path is used.
  * @returns {boolean}
  */
-const supportsRootTypography = () => !!(
-  CONFIGURATION_COLLECTION_KEY_HAS_ROOT_TYPOGRAPHY
-  && configuration.get(CONFIGURATION_COLLECTION_KEY_HAS_ROOT_TYPOGRAPHY)
-);
+const supportsRootTypography = () =>
+  !!configuration.get(CONFIGURATION_COLLECTION_KEY_HAS_ROOT_TYPOGRAPHY);
 
 /**
  * Adds fonts link and applies the configured typography.
