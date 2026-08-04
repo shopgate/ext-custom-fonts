@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2026-07-28
+### Changed
+- On PWA versions that render base typography through the `--sg-root-*` custom properties, the configured `font` shorthand's font-family and font-size are now decomposed and applied to the root element (`<html>`) via those custom properties instead of overriding `<body>`. This keeps the custom font in sync with the new theme (including the typography variants). Support is detected via the shared configuration collection (the PWA sets `CONFIGURATION_COLLECTION_KEY_HAS_ROOT_TYPOGRAPHY`), so the extension stays self-contained and older PWA versions keep the legacy `<body>` override.
+  - The `font` shorthand's line-height (and a `lineHeight` rule) is intentionally not applied on this path — base line-height is the `body1` typography variant and must be configured via the `typography` setting (`body1.lineHeight`). Older PWA versions still apply line-height to `<body>` as before.
+
 ## [1.1.0] - 2025-10-13
 ### Added
 - Theme typography of PWA >= 7.29.0 can be configured via the new "typography" config setting.

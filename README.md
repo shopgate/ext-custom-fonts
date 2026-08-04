@@ -34,6 +34,14 @@ body {
 }
 ```
 
+> **Note on newer PWA versions (root typography):** On PWA versions that render base typography
+> through the `--sg-root-*` custom properties, the `font` shorthand's **font-family** and
+> **font-size** are applied to the root element so they stay in sync with the theme. Its
+> **line-height** part is not applied here — base line-height is the `body1` typography variant, so
+> configure it via the [`typography`](#extending-typography-of-the-pwa-theme) setting
+> (`body1.lineHeight`) instead. Older PWA versions keep applying the whole `rules` object to
+> `<body>` unchanged.
+
 ## Extending Typography of the PWA Theme
 Starting with version 7.29.0, the PWA includes a theming system that allows you to customize various typography-related settings.
 
@@ -43,18 +51,12 @@ The default typography settings can be extended or overridden using the typograp
 When this feature was first introduced, the theme was primarily applied to components newly developed for CMS 2.0, such as headline elements.
 
 ### Example
-The following example shows a basic configuration that replaces the default `fontFamily` with a custom one. The `allVariants` object defines typography settings that are applied to all typography variants - here it changes the default text color. The `h1` object sets a custom font family, font weight and font size that's only used for h1 headlines (h2-h6 is certainly also supported).
-
 The following example demonstrates a basic configuration that replaces the default `fontFamily` with a custom one.
-The `allVariants` object defines typography settings applied to all text variants (in this case, changing the default text color).
 The `h1` object customizes the H1 headline style by specifying a custom font family, font weight, and font size. (Styles for h2–h6 can also be defined in the same way.)
 
 ```json
 {
   "fontFamily": "My Custom Font Regular",
-  "allVariants": {
-    "color": "darkgray"
-  },
   "h1": {
     "fontFamily": "My Custom Font Bold",
     "fontWeight": 900,
