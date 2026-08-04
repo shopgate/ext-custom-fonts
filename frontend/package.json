@@ -22,9 +22,9 @@
   },
   "homepage": "https://github.com/shopgate/ext-custom-fonts#readme",
   "devDependencies": {
-    "@shopgate/engage": ">=7.30.0",
-    "@shopgate/eslint-config": "7.31.5-beta.4",
-    "@shopgate/pwa-unit-test": "7.31.5-beta.4",
+    "@shopgate/engage": ">=7.31.5",
+    "@shopgate/eslint-config": "^7.31.5",
+    "@shopgate/pwa-unit-test": "^7.31.5",
     "eslint": "^8.57.1",
     "glamor": "^2.20.40",
     "jest": "^29.7.0",
